@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buscador Avanzado</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <h1>Buscador avanzado</h1>
+    <p>Llena las casillas y abajo aparece la búsqueda lista para usar.</p>
+  </header>
+
+  <section>
+    <h2>1 · Palabras clave</h2>
+    <div class="grid kw" id="kw"></div>
+    <p class="hint">AND = ambas, OR = una u otra, NOT = excluir (se escribe como -palabra, porque Google no entiende NOT).</p>
+  </section>
+
+  <section>
+    <h2>2 · Filtros</h2>
+    <div class="grid flt" id="flt"></div>
+  </section>
+
+  <section class="result">
+    <h2>3 · Resultado</h2>
+    <label>Consulta lista para copiar y pegar</label>
+    <div class="query-row">
+      <output id="query" class="query"></output>
+      <button id="copy" type="button">Copiar</button>
+    </div>
+    <p id="warn" class="warn"></p>
+    <div class="actions">
+      <a id="go-google" class="btn" target="_blank" rel="noopener">▶ Abrir en Google</a>
+      <a id="go-scholar" class="btn alt" target="_blank" rel="noopener">▶ Abrir en Google Académico</a>
+    </div>
+    <p class="hint">Google Académico usa palabras clave, materia, autor y años. El idioma solo se aplica con los botones.</p>
+  </section>
+</main>
+<script src="listas.js"></script>
+<script src="search.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

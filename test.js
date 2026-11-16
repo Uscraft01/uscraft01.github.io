@@ -1,0 +1,16 @@
+const { build } = require("./search.js");
+const assert = require("assert");
+const base = () => ({ kw: [0,1,2,3].map(()=>({v:"",op:"AND",exact:"No"})), materia:{v:"",op:"AND",title:"No"}, nivel:{v:"",op:"AND",title:"No"}, tipo:{v:"",op:"AND",title:"No"}, formato:"", idioma:"", pais:"", fuente:"", autor:{v:"",op:"AND"}, desde:"", hasta:"" });
+let s = base(); assert.equal(build(s).consulta, "");
+s.kw[0].v="ecuaciones cuadráticas"; s.kw[0].exact="Si"; s.kw[1].v="taller"; s.kw[1].op="NOT";
+s.materia={v:"Matemáticas",op:"AND",title:"Si"}; s.formato="PDF"; s.pais="co - Colombia"; s.fuente="edu"; s.desde="2018"; s.idioma="es - Español";
+let r = build(s);
+assert.equal(r.consulta, '"ecuaciones cuadráticas" -taller AND intitle:"Matemáticas" filetype:pdf site:edu.co after:2018');
+assert.equal(r.academico, '"ecuaciones cuadráticas" -taller AND "Matemáticas"');
+assert.ok(r.google.endsWith("&lr=lang_es")); assert.ok(r.scholar.includes("&as_ylo=2018"));
+assert.ok(r.avisos.includes("gob"));
+s = base(); s.materia={v:"Física",op:"OR",title:"No"}; s.pais="mx - México"; s.fuente="youtube.com"; s.desde="2020"; s.hasta="2010";
+r = build(s); assert.equal(r.consulta,'"Física" site:youtube.com after:2020 before:2010');
+assert.ok(r.avisos.includes("ignoró el país")&&r.avisos.includes("mayor"));
+s = base(); s.pais="co - Colombia"; assert.equal(build(s).consulta,"site:.co");
+console.log("OK");
