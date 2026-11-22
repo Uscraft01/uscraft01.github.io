@@ -1,14 +1,14 @@
 (function () {
   const L = window.LISTAS;
   const $ = (id) => document.getElementById(id);
-  const opts = (arr) => arr.map((o) => `<option value="${o}">`).join("");
+  const opts = (arr) => arr.map((o) => `<option value="${o}">${o}</option>`).join("");
   const sel = (id, arr, def) =>
     `<select id="${id}">${arr.map((o) => `<option${o === def ? " selected" : ""}>${o}</option>`).join("")}</select>`;
   const dash = '<span class="dash">—</span>';
 
-  // Listas para <datalist> (permiten elegir o escribir lo propio)
+  // Listas de los desplegables: solo se puede elegir lo que esté aquí (ver listas.js)
   const dl = { materia: L.materias, nivel: L.niveles, tipo: L.tipos, formato: L.formatos, idioma: L.idiomas, pais: L.paises, fuente: L.fuentes };
-  document.body.insertAdjacentHTML("beforeend", Object.entries(dl).map(([k, v]) => `<datalist id="dl-${k}">${opts(v)}</datalist>`).join(""));
+  const pick = (k) => `<select id="${k}"><option value="">— Cualquiera —</option>${opts(dl[k])}</select>`;
 
   // 1 · Palabras clave
   let h = `<div class="hd">Campo</div><div class="hd">Valor</div><div class="hd">Unir con la anterior</div><div class="hd">¿Frase exacta?</div>`;
@@ -24,10 +24,10 @@
   const f3 = [["materia", "Materia"], ["nivel", "Nivel educativo"], ["tipo", "Tipo de documento"]];
   let g = `<div class="hd">Filtro</div><div class="hd">Valor</div><div class="hd">¿Solo en el título?</div><div class="hd">Unir con lo anterior</div>`;
   f3.forEach(([k, n]) => {
-    g += `<label for="${k}">${n}</label><input id="${k}" list="dl-${k}" type="text">${sel(k + "T", ["No", "Si"])}${sel(k + "O", ["AND", "OR", "NOT"])}`;
+    g += `<label for="${k}">${n}</label>${pick(k)}${sel(k + "T", ["No", "Si"])}${sel(k + "O", ["AND", "OR", "NOT"])}`;
   });
   [["formato", "Formato de archivo"], ["idioma", "Idioma"], ["pais", "País"], ["fuente", "Fuente"]].forEach(([k, n]) => {
-    g += `<label for="${k}">${n}</label><input id="${k}" list="dl-${k}" type="text">${dash}${dash}`;
+    g += `<label for="${k}">${n}</label>${pick(k)}${dash}${dash}`;
   });
   g += `<label for="autor">Autor</label><input id="autor" type="text" placeholder="Nombre exacto">${dash}${sel("autorO", ["AND", "OR", "NOT"])}`;
   g += `<label for="desde">Año desde</label><input id="desde" type="number" min="1900" step="1" placeholder="Ej.: 2018">${dash}${dash}`;
